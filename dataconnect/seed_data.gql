@@ -1,0 +1,70 @@
+mutation SeedDatabase @transaction {
+  user_insertMany(data: [
+    {
+      id: "770e8400-e29b-41d4-a716-446655440001",
+      email: "alice@example.com",
+      displayName: "Alice Nutrition",
+      dailyCalorieGoal: 2000,
+      weight: 65.5,
+      height: 165.0,
+      age: 30,
+      allergyTags: ["nuts", "soy"]
+    },
+    {
+      id: "770e8400-e29b-41d4-a716-446655440002",
+      email: "bob@example.com",
+      displayName: "Bob Fitness",
+      dailyCalorieGoal: 2500,
+      weight: 85.0,
+      height: 180.0,
+      age: 35,
+      allergyTags: []
+    }
+  ])
+  foodItem_insertMany(data: [
+    {
+      id: "880e8400-e29b-41d4-a716-446655440001",
+      name: "Oatmeal",
+      calories: 150,
+      protein: 5.0,
+      carbs: 27.0,
+      fat: 2.5,
+      brandName: "Quaker"
+    },
+    {
+      id: "880e8400-e29b-41d4-a716-446655440002",
+      name: "Chicken Breast",
+      calories: 165,
+      protein: 31.0,
+      carbs: 0.0,
+      fat: 3.6,
+      brandName: "Perdue"
+    }
+  ])
+  goal_insertMany(data: [
+    {
+      userId: "770e8400-e29b-41d4-a716-446655440001",
+      goalType: "Weight Loss",
+      targetDate: "2024-12-31",
+      targetWeight: 60.0,
+      notes: "Lose weight before new year"
+    }
+  ])
+  insight_insertMany(data: [
+    {
+      userId: "770e8400-e29b-41d4-a716-446655440001",
+      content: "You are doing great on your calorie tracking!",
+      generatedAt: "2024-05-20T10:00:00Z",
+      sentimentScore: 0.9
+    }
+  ])
+  logEntry_insertMany(data: [
+    {
+      userId: "770e8400-e29b-41d4-a716-446655440001",
+      foodItemId: "880e8400-e29b-41d4-a716-446655440001",
+      timestamp: "2024-05-20T08:00:00Z",
+      quantity: 1.0,
+      mealType: "Breakfast"
+    }
+  ])
+}

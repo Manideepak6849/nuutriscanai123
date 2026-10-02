@@ -1,0 +1,151 @@
+mutation CreateUser @auth(level: USER) {
+  user_insert(data: {
+    id_expr: "auth.uid",
+    email: "user@example.com",
+    displayName: "New User",
+    dailyCalorieGoal: 2000
+  })
+}
+
+mutation UpdateUser @auth(level: USER) {
+  user_update(key: {id_expr: "auth.uid"}, data: {displayName: "Updated Name"})
+}
+
+mutation DeleteUser @auth(level: USER) {
+  user_delete(key: {id_expr: "auth.uid"})
+}
+
+query GetUser @auth(level: USER) {
+  user(id: {id_expr: "auth.uid"}) {
+    email
+    displayName
+    dailyCalorieGoal
+  }
+}
+
+query ListUsers @auth(level: USER) {
+  users {
+    displayName
+  }
+}
+
+mutation CreateFoodItem @auth(level: PUBLIC, insecureReason: "Food database is intended to be shared globally.") {
+  foodItem_insert(data: {
+    name: "Apple",
+    calories: 95,
+    protein: 0.5,
+    carbs: 25.0,
+    fat: 0.3
+  })
+}
+
+mutation UpdateFoodItem @auth(level: PUBLIC, insecureReason: "Food database is shared; editing helps correct information for everyone.") {
+  foodItem_update(id: "some-uuid", data: {calories: 100})
+}
+
+mutation DeleteFoodItem @auth(level: PUBLIC, insecureReason: "Authorized moderators need to remove invalid food entries.") {
+  foodItem_delete(id: "some-uuid")
+}
+
+query GetFoodItem @auth(level: PUBLIC) {
+  foodItem(id: "some-uuid") {
+    name
+    calories
+  }
+}
+
+query ListFoodItems @auth(level: PUBLIC) {
+  foodItems {
+    name
+    brandName
+  }
+}
+
+mutation CreateLogEntry @auth(level: USER) {
+  logEntry_insert(data: {
+    timestamp: "2023-10-27T10:00:00Z",
+    quantity: 1.0,
+    mealType: "breakfast",
+    userId: {id_expr: "auth.uid"},
+    foodItem: {id: "some-food-uuid"}
+  })
+}
+
+mutation UpdateLogEntry @auth(level: USER) {
+  logEntry_update(key: {id: "some-log-uuid"}, data: {quantity: 2.0})
+}
+
+mutation DeleteLogEntry @auth(level: USER) {
+  logEntry_delete(key: {id: "some-log-uuid"})
+}
+
+query GetLogEntry @auth(level: USER) {
+  logEntry(key: {id: "some-log-uuid"}) {
+    timestamp
+    quantity
+    foodItem { name }
+  }
+}
+
+query ListMyLogEntries @auth(level: USER) {
+  logEntries(where: {userId: {eq_expr: "auth.uid"}}) {
+    timestamp
+    foodItem { name }
+  }
+}
+
+mutation CreateGoal @auth(level: USER) {
+  goal_insert(data: {
+    goalType: "Weight Loss",
+    targetDate: "2024-01-01",
+    user: {id_expr: "auth.uid"}
+  })
+}
+
+mutation UpdateGoal @auth(level: USER) {
+  goal_update(key: {id: "some-goal-uuid"}, data: {targetWeight: 70.0})
+}
+
+mutation DeleteGoal @auth(level: USER) {
+  goal_delete(key: {id: "some-goal-uuid"})
+}
+
+query GetGoal @auth(level: USER) {
+  goal(key: {id: "some-goal-uuid"}) {
+    goalType
+    targetDate
+  }
+}
+
+query ListMyGoals @auth(level: USER) {
+  goals(where: {userId: {eq_expr: "auth.uid"}}) {
+    goalType
+    targetDate
+  }
+}
+
+mutation CreateInsight @auth(level: USER) {
+  insight_insert(data: {
+    content: "You are doing great!",
+    generatedAt: "2023-10-27T12:00:00Z",
+    user: {id_expr: "auth.uid"}
+  })
+}
+
+mutation DeleteInsight @auth(level: USER) {
+  insight_delete(key: {id: "some-insight-uuid"})
+}
+
+query GetInsight @auth(level: USER) {
+  insight(key: {id: "some-insight-uuid"}) {
+    content
+    sentimentScore
+  }
+}
+
+query ListMyInsights @auth(level: USER) {
+  insights(where: {userId: {eq_expr: "auth.uid"}}) {
+    content
+    generatedAt
+  }
+}

@@ -1,0 +1,43 @@
+type User @table {
+  email: String!
+  displayName: String!
+  dailyCalorieGoal: Int!
+  weight: Float
+  height: Float
+  age: Int
+  allergyTags: [String]
+}
+
+type FoodItem @table {
+  name: String!
+  calories: Int!
+  protein: Float!
+  carbs: Float!
+  fat: Float!
+  imageUrl: String
+  brandName: String
+  ingredients: String
+}
+
+type LogEntry @table {
+  timestamp: Timestamp!
+  quantity: Float!
+  mealType: String
+  user: User!
+  foodItem: FoodItem!
+}
+
+type Goal @table {
+  goalType: String!
+  targetDate: Date!
+  targetWeight: Float
+  notes: String
+  user: User!
+}
+
+type Insight @table {
+  content: String!
+  generatedAt: Timestamp!
+  sentimentScore: Float
+  user: User!
+}
